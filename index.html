@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script> 
+</head>
+<body>
+
+    
+    <script type="module">
+        
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js";
+        import {getDatabase, ref, onValue} from "https://www.gstatic.com/firebasejs/9.6.4/firebase-database.js"
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyCnmmhQSrfehYzj-6r9hPmMmFGaf7JuHVk",
+    authDomain: "dronesimdata.firebaseapp.com",
+    databaseURL: "https://dronesimdata-default-rtdb.firebaseio.com",
+    projectId: "dronesimdata",
+    storageBucket: "dronesimdata.appspot.com",
+    messagingSenderId: "1085494560362",
+    appId: "1:1085494560362:web:39f112434c42059fe4ac13",
+    measurementId: "G-Q6SEY255MQ",
+    //databaseURL: "https://dronesimdata-default-rtdb.firebaseio.com/"
+    };
+
+// Initialize Firebase
+    
+
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 1000,
+        height: 800,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 200 }
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const xList = [0,0,0,0,0,0,0,0,0,0,0];
+    const yList = [0,0,0,0,0,0,0,0,0,0,0];
+    const playerList = []
+    var currentInfoDisplay = -1;
+    var text;
+    function preload ()
+    {
+        this.load.setBaseURL('http://labs.phaser.io');
+
+        this.load.image('sky', 'assets/skies/space3.png');
+        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+        this.load.image('red', 'assets/particles/red.png');
+        this.load.image('drone', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6DvUDwMyg8ko3mosvekw3vnnedJflwdRCEQ&usqp=CAU');
+        this.load.image('background', 'https://static.vecteezy.com/system/resources/previews/006/430/145/original/technology-background-concept-circuit-board-electronic-system-futuristic-hi-tech-light-on-dark-blue-free-vector.jpg')
+    }
+
+
+    function create ()
+    {
+        var background = this.add.image(500,400, 'background');
+        background.setScale(1.5);
+        //this.add.image(1000, 800, 'sky');
+        text = this.add.text(( 100),100,"", {font: "15px Arial", color: "#3CB043", align: "center", backgroundColor:"#000000"});
+        
+        //var particles = this.add.particles('red');
+
+        // var emitter = particles.createEmitter({
+        //     speed: 100,
+        //     scale: { start: 1, end: 0 },
+        //     blendMode: 'ADD'
+        // });
+
+        //var logo = this.physics.add.image(400, 100, 'logo');
+        // logo.setVelocity(100, 200);
+        // logo.setBounce(1, 1);
+        // logo.setCollideWorldBounds(true);
+
+        // emitter.startFollow(logo);
+        for(var i = 0; i<11; i++){
+            playerList[i] = this.add.sprite(0,0, 'drone').setInteractive();
+            playerList[i].setScale(.3)  
+        }
+        
+            playerList[0].on('pointerdown', function(){
+                currentInfoDisplay = 0;
+            });
+            playerList[1].on('pointerdown', function(){
+                currentInfoDisplay = 1;
+            });
+            playerList[2].on('pointerdown', function(){
+                currentInfoDisplay = 2;
+            });
+            playerList[3].on('pointerdown', function(){
+                currentInfoDisplay = 3;
+            });
+            playerList[4].on('pointerdown', function(){
+                currentInfoDisplay = 4;
+            });
+            playerList[5].on('pointerdown', function(){
+                currentInfoDisplay = 5;
+            });
+            playerList[6].on('pointerdown', function(){
+                currentInfoDisplay = 6;
+            });
+            playerList[7].on('pointerdown', function(){
+                currentInfoDisplay = 7;
+            });
+            playerList[8].on('pointerdown', function(){
+                currentInfoDisplay = 8;
+            });
+            playerList[9].on('pointerdown', function(){
+                currentInfoDisplay = 9;
+            });
+            playerList[10].on('pointerdown', function(){
+                currentInfoDisplay = 10;
+            });
+        
+        //var topLeft = this.add.sprite(0,0,'drone');
+         //var topRight = this.add.sprite(950,0,'drone');
+         //var botLeft = this.add.sprite(0,750,'drone');
+          //var botRight = this.add.sprite(1000,800,'drone');
+        //playerList.setCollideWorldBounds(true);
+    }
+    var ticker = 0;
+    
+    
+    function update(){
+        
+        ticker++;
+        if(ticker%30==0){
+            //text.destroy();
+            for(var i = 0; i<11; i++){
+            const r = ref(database, '/drones/'+i);
+            onValue(r, (snapshot) => {
+                const x = (snapshot.val().x)*10;
+                const y = (snapshot.val().y)*8;
+                if(x!=undefined && y!=undefined){
+                    //console.log(x+500+" "+y);
+                    playerList[i].setPosition(x+500,y);
+                }
+                //console.log(currentInfoDisplay);
+                //if(text){text.destroy()}
+                if(i==currentInfoDisplay){
+                    text.setPosition(x+465, y+35)
+                    text.setText("ID: "+snapshot.val().name+"\nx: "+Math.floor(x)+", y: "+Math.floor(y))
+                    console.log("displayed")
+                }
+            //console.log(data);
+        });
+        }
+        //console.log("hi");
+        
+    }
+}
+    </script>
+
+</body>
+</html>
