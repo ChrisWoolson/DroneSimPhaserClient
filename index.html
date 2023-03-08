@@ -150,12 +150,12 @@
                 const y = (snapshot.val().y)*9;
                 if(x!=undefined && y!=undefined){
                     //console.log(x+500+" "+y);
-                    playerList[i].setPosition(x+500,y+100);
+                    playerList[i].setPosition(x+500,y+200);
                 }
                 //console.log(currentInfoDisplay);
                 //if(text){text.destroy()}
                 if(i==currentInfoDisplay){
-                    text.setPosition(x+465, y+135)
+                    text.setPosition(x+465, y+235)
                     text.setText("ID: "+snapshot.val().name+"\nx: "+Math.floor(x)+", y: "+Math.floor(y))
                     console.log("displayed")
                 }
