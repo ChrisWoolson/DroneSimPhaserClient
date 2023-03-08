@@ -147,15 +147,15 @@
             const r = ref(database, '/drones/'+i);
             onValue(r, (snapshot) => {
                 const x = (snapshot.val().x)*10;
-                const y = (snapshot.val().y)*8;
+                const y = (snapshot.val().y)*9;
                 if(x!=undefined && y!=undefined){
                     //console.log(x+500+" "+y);
-                    playerList[i].setPosition(x+500,y);
+                    playerList[i].setPosition(x+500,y+100);
                 }
                 //console.log(currentInfoDisplay);
                 //if(text){text.destroy()}
                 if(i==currentInfoDisplay){
-                    text.setPosition(x+465, y+35)
+                    text.setPosition(x+465, y+135)
                     text.setText("ID: "+snapshot.val().name+"\nx: "+Math.floor(x)+", y: "+Math.floor(y))
                     console.log("displayed")
                 }
