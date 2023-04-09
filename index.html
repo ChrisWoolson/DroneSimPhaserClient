@@ -141,13 +141,13 @@
     function update(){
         
         ticker++;
-        if(ticker%5==0){
+        if(ticker%20==0){
             //text.destroy();
             for(var i = 0; i<11; i++){
             const r = ref(database, '/drones/'+i);
             onValue(r, (snapshot) => {
-                const x = (snapshot.val().x)*10;
-                const y = (snapshot.val().y)*9;
+                const x = (snapshot.val().position.x)*10;
+                const y = (snapshot.val().position.y)*9;
                 if(x!=undefined && y!=undefined){
                     //console.log(x+500+" "+y);
                     playerList[i].setPosition(x+500,y+200);
