@@ -52,9 +52,8 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    const xList = [0,0,0,0,0,0,0,0,0,0,0];
-    const yList = [0,0,0,0,0,0,0,0,0,0,0];
     const playerList = []
+    var playerSprite
     var currentInfoDisplay = -1;
     var text;
     function preload ()
@@ -65,7 +64,9 @@
         this.load.image('logo', 'assets/sprites/phaser3-logo.png');
         this.load.image('red', 'assets/particles/red.png');
         this.load.image('drone', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6DvUDwMyg8ko3mosvekw3vnnedJflwdRCEQ&usqp=CAU');
+        this.load.image('unknownDrone', 'https://static.vecteezy.com/system/resources/previews/014/989/719/original/question-mark-hand-drawn-doodle-faq-symbol-free-vector.jpg');
         this.load.image('background', 'https://static.vecteezy.com/system/resources/previews/006/430/145/original/technology-background-concept-circuit-board-electronic-system-futuristic-hi-tech-light-on-dark-blue-free-vector.jpg')
+        this.load.image('player', 'https://media.istockphoto.com/id/1130455739/vector/sketch-smartphone-the-phone-is-isolated-on-a-white-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=1haz05V1oS6FtmV_BAtVCAd7yUOj_NOact_2dDRiNO4=')
     }
 
 
@@ -94,6 +95,8 @@
             playerList[i] = this.add.sprite(0,0, 'drone').setInteractive();
             playerList[i].setScale(.3)  
         }
+        playerSprite = this.add.sprite(100,100,'player');
+        playerSprite.setScale(.15);
         
             playerList[0].on('pointerdown', function(){
                 currentInfoDisplay = 0;
@@ -163,7 +166,27 @@
         });
         }
         //console.log("hi");
-        
+    }
+
+    const pr = ref(database,'player');
+    onValue(pr, (snapshot)=>{
+        const x = (snapshot.val().position.x)*10;
+        const y = (snapshot.val().position.y)*9;
+        if(x!= undefined && y != undefined){
+            playerSprite.setPosition(x+500, y+200);
+        }
+    })
+
+
+
+    for(var i = 0; i<11; i++){
+        if(Math.sqrt(Math.pow(playerSprite.x-playerList[i].x, 2) + Math.pow(playerSprite.y-playerList[i].y, 2))<300){
+            playerList[i].setTexture('drone')
+            playerList[i].setScale(.3)
+        } else{
+            playerList[i].setTexture('unknownDrone');
+            playerList[i].setScale(.03)
+        }
     }
 }
     </script>
