@@ -3,8 +3,13 @@
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script> 
 </head>
-<body>
+<body 
+style="background-color:rgb(68, 88, 188); 
+font-size: 30px; font-family: 'Noto Sans', sans-serif;
+line-height: 0px; "
+>
 
+    <p><center>DCI Drone Map</center></p>
     
     <script type="module">
         
@@ -33,8 +38,9 @@
 
     var config = {
         type: Phaser.AUTO,
-        width: 1000,
-        height: 800,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        
         physics: {
             default: 'arcade',
             arcade: {
@@ -45,7 +51,9 @@
             preload: preload,
             create: create,
             update: update
-        }
+        },
+        
+        
     };
 
     var game = new Phaser.Game(config);
@@ -65,17 +73,17 @@
         this.load.image('red', 'assets/particles/red.png');
         this.load.image('drone', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6DvUDwMyg8ko3mosvekw3vnnedJflwdRCEQ&usqp=CAU');
         this.load.image('unknownDrone', 'https://static.vecteezy.com/system/resources/previews/014/989/719/original/question-mark-hand-drawn-doodle-faq-symbol-free-vector.jpg');
-        this.load.image('background', 'https://static.vecteezy.com/system/resources/previews/006/430/145/original/technology-background-concept-circuit-board-electronic-system-futuristic-hi-tech-light-on-dark-blue-free-vector.jpg')
-        this.load.image('player', 'https://media.istockphoto.com/id/1130455739/vector/sketch-smartphone-the-phone-is-isolated-on-a-white-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=1haz05V1oS6FtmV_BAtVCAd7yUOj_NOact_2dDRiNO4=')
+        this.load.image('background', 'https://elements-video-cover-images-0.imgix.net/files/ccbac118-2c67-4e45-bda1-5d5d9233d46d/inline_image_preview.jpg?auto=compress%2Cformat&fit=min&h=394&w=700&s=f709897523fbe62bb21d1f7f442f934b')
+        //this.load.image('player', 'https://media.istockphoto.com/id/1130455739/vector/sketch-smartphone-the-phone-is-isolated-on-a-white-background-vector-illustration.jpg?s=612x612&w=0&k=20&c=1haz05V1oS6FtmV_BAtVCAd7yUOj_NOact_2dDRiNO4=')
     }
 
 
     function create ()
     {
-        var background = this.add.image(500,400, 'background');
-        background.setScale(1.5);
+        var background = this.add.image(window.innerWidth/2.2,window.innerHeight/2.2, 'background');
+        background.setScale(2.5);
         //this.add.image(1000, 800, 'sky');
-        text = this.add.text(( 100),100,"", {font: "15px Arial", color: "#3CB043", align: "center", backgroundColor:"#000000"});
+        text = this.add.text(( 100),100,"", {font: "15px Arial", color: "#3CB043", align: "center", backgroundColor:"#FFFFFF"});
         
         //var particles = this.add.particles('red');
 
@@ -95,8 +103,20 @@
             playerList[i] = this.add.sprite(0,0, 'drone').setInteractive();
             playerList[i].setScale(.3)  
         }
-        playerSprite = this.add.sprite(100,100,'player');
-        playerSprite.setScale(.15);
+        //this.add.sprite(200,200,'player').setScale(.15);
+
+       
+        var c1 = this.add.circle(.2*window.innerWidth,.2*window.innerHeight,150,0x7FF837,.1)
+        var c2 = this.add.circle(500,550,150, 0x464DFD, .2)
+
+
+        var c4 = this.add.circle(500,550, 23, 0xFFFFFF)
+        var c3 = this.add.circle(.2*window.innerWidth, .2*window.innerHeight, 20, 0x7FF837, .6)
+        var c3 = this.add.circle(500, 550, 20, 0x464DFD, 1)
+
+
+        //playerSprite = this.add.sprite(500,550,'player');
+        //playerSprite.setScale(.15);
         
             playerList[0].on('pointerdown', function(){
                 currentInfoDisplay = 0;
@@ -149,16 +169,16 @@
             for(var i = 0; i<11; i++){
             const r = ref(database, '/drones/'+i);
             onValue(r, (snapshot) => {
-                const x = (snapshot.val().position.x)*10;
-                const y = (snapshot.val().position.y)*9;
+                const x =  (snapshot.val().position.x)/100 * window.innerWidth;
+                const y = (snapshot.val().position.y)/100 * window.innerHeight;
                 if(x!=undefined && y!=undefined){
                     //console.log(x+500+" "+y);
-                    playerList[i].setPosition(x+500,y+200);
+                    playerList[i].setPosition(x,y);
                 }
                 //console.log(currentInfoDisplay);
                 //if(text){text.destroy()}
                 if(i==currentInfoDisplay){
-                    text.setPosition(x+465, y+235)
+                    text.setPosition(x-30, y+35)
                     text.setText("ID: "+snapshot.val().name+"\nx: "+Math.floor(x)+", y: "+Math.floor(y))
                     console.log("displayed")
                 }
@@ -168,24 +188,16 @@
         //console.log("hi");
     }
 
-    const pr = ref(database,'player');
-    onValue(pr, (snapshot)=>{
-        const x = (snapshot.val().position.x)*10;
-        const y = (snapshot.val().position.y)*9;
-        if(x!= undefined && y != undefined){
-            playerSprite.setPosition(x+500, y+200);
-        }
-    })
-
-
 
     for(var i = 0; i<11; i++){
-        if(Math.sqrt(Math.pow(playerSprite.x-playerList[i].x, 2) + Math.pow(playerSprite.y-playerList[i].y, 2))<300){
+        if(Math.sqrt(Math.pow(500-playerList[i].x, 2) + Math.pow(550-playerList[i].y, 2))<150 ||
+        Math.sqrt(Math.pow(200-playerList[i].x, 2) + Math.pow(200-playerList[i].y, 2))<150){
             playerList[i].setTexture('drone')
             playerList[i].setScale(.3)
         } else{
+            //console.log("outta range")
             playerList[i].setTexture('unknownDrone');
-            playerList[i].setScale(.03)
+            playerList[i].setScale(.02)
         }
     }
 }
