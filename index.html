@@ -64,6 +64,10 @@ line-height: 0px; "
     var playerSprite
     var currentInfoDisplay = -1;
     var text;
+  
+    const player1CoordPair = [];
+    const player2CoordPair = [];
+
     function preload ()
     {
         this.load.setBaseURL('http://labs.phaser.io');
@@ -105,15 +109,22 @@ line-height: 0px; "
         }
         //this.add.sprite(200,200,'player').setScale(.15);
 
+        player1CoordPair[0] = .5*window.innerWidth;
+        player1CoordPair[1] = .7*window.innerHeight;
+        player1CoordPair[2] = Math.sqrt(window.innerWidth*window.innerHeight)/5;
+
+        player2CoordPair[0] = .2*window.innerWidth;
+        player2CoordPair[1] = .2*window.innerHeight;
+        player2CoordPair[2] = Math.sqrt(window.innerWidth*window.innerHeight)/5;
        
-        var c1 = this.add.circle(.2*window.innerWidth,.2*window.innerHeight,150,0x7FF837,.1)
-        var c2 = this.add.circle(500,550,150, 0x464DFD, .2)
+        var c1 = this.add.circle(player2CoordPair[0],player2CoordPair[1],player2CoordPair[2],0x7FF837,.1)
+        var c2 = this.add.circle(player1CoordPair[0],player1CoordPair[1], player1CoordPair[2], 0x464DFD, .2)
 
 
-        var c4 = this.add.circle(500,550, 23, 0xFFFFFF)
-        var c3 = this.add.circle(.2*window.innerWidth, .2*window.innerHeight, 20, 0x7FF837, .6)
-        var c3 = this.add.circle(500, 550, 20, 0x464DFD, 1)
+        var c4 = this.add.circle(player1CoordPair[0],player1CoordPair[1], player1CoordPair[2]/7, 0xFFFFFF)
+        var c3 = this.add.circle(player1CoordPair[0],player1CoordPair[1], player1CoordPair[2]/8, 0x464DFD, 1)
 
+        var c3 = this.add.circle(player2CoordPair[0],player2CoordPair[1], player2CoordPair[2]/8, 0x7FF837, .6)
 
         //playerSprite = this.add.sprite(500,550,'player');
         //playerSprite.setScale(.15);
@@ -188,12 +199,14 @@ line-height: 0px; "
         //console.log("hi");
     }
 
-
+    var numDrones = 0;
     for(var i = 0; i<11; i++){
-        if(Math.sqrt(Math.pow(500-playerList[i].x, 2) + Math.pow(550-playerList[i].y, 2))<150 ||
-        Math.sqrt(Math.pow(200-playerList[i].x, 2) + Math.pow(200-playerList[i].y, 2))<150){
+        if(Math.sqrt(Math.pow(player1CoordPair[0]-playerList[i].x, 2) + Math.pow(player1CoordPair[1]-playerList[i].y, 2))<player1CoordPair[2] ||
+        Math.sqrt(Math.pow(player2CoordPair[0]-playerList[i].x, 2) + Math.pow(player2CoordPair[1]-playerList[i].y, 2))<player2CoordPair[2]){
             playerList[i].setTexture('drone')
             playerList[i].setScale(.3)
+            this.add.text(window.innerWidth*.7,window.innerHeight*0+numDrones*20,"Alert: Drone approaching", {font: "15px Arial", color: "#f51073", align: "center", backgroundColor:"#FFFFFF"});
+            
         } else{
             //console.log("outta range")
             playerList[i].setTexture('unknownDrone');
