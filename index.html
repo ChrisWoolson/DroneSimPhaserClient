@@ -87,7 +87,7 @@ line-height: 0px; "
         var background = this.add.image(window.innerWidth/2.2,window.innerHeight/2.2, 'background');
         background.setScale(2.5);
         //this.add.image(1000, 800, 'sky');
-        text = this.add.text(( 100),100,"", {font: "15px Arial", color: "#3CB043", align: "center", backgroundColor:"#FFFFFF"});
+        text = this.add.text(( 100),100,"", {font: "100% Arial", color: "#3CB043", align: "center", backgroundColor:"#FFFFFF"});
         
         //var particles = this.add.particles('red');
 
@@ -205,7 +205,7 @@ line-height: 0px; "
         Math.sqrt(Math.pow(player2CoordPair[0]-playerList[i].x, 2) + Math.pow(player2CoordPair[1]-playerList[i].y, 2))<player2CoordPair[2]){
             playerList[i].setTexture('drone')
             playerList[i].setScale(.3)
-            this.add.text(window.innerWidth*.7,window.innerHeight*0+numDrones*20,"Alert: Drone approaching", {font: "15px Arial", color: "#f51073", align: "center", backgroundColor:"#FFFFFF"});
+            this.add.text(window.innerWidth*.7,window.innerHeight*0+numDrones*20,"Alert: Drone approaching", {font: "150% Arial", color: "#f51073", align: "center", backgroundColor:"#FFFFFF"});
             
         } else{
             //console.log("outta range")
