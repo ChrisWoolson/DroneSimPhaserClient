@@ -176,7 +176,7 @@ line-height: 0px; "
     function update(){
         
         ticker++;
-        if(ticker%15==0){
+        if(ticker%20==0){
             //text.destroy();
             for(var i = 0; i<11; i++){
             const r = ref(database, '/drones/'+i);
@@ -210,7 +210,7 @@ line-height: 0px; "
         Math.sqrt(Math.pow(player2CoordPair[0]-playerList[i].x, 2) + Math.pow(player2CoordPair[1]-playerList[i].y, 2))<player2CoordPair[2]){
             playerList[i].setTexture('drone')
             playerList[i].setScale(.3)
-            alertTextList.push(this.add.text(window.innerWidth*.7,window.innerHeight*0+(numDrones*20),"Alert: Drone approaching", {font: "150% Arial", color: "#f51073", align: "center", backgroundColor:"#FFFFFF"}));
+            alertTextList.push(this.add.text(window.innerWidth*.7,window.innerHeight*0+(numDrones*20),"Alert: Drone approaching", {font: "250% Arial", color: "#f51073", align: "center", backgroundColor:"#FFFFFF"}));
             numDrones++;
         } else{
             //console.log("outta range")
