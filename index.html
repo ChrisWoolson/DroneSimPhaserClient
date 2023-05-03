@@ -88,7 +88,7 @@ line-height: 0px; "
         var background = this.add.image(window.innerWidth/2.2,window.innerHeight/2.2, 'background');
         background.setScale(5);
         //this.add.image(1000, 800, 'sky');
-        text = this.add.text(( 100),100,"", {font: "150% Arial", color: "#3CB043", align: "center", backgroundColor:"#FFFFFF"});
+        text = this.add.text(( 100),100,"", {font: "350% Arial", color: "#3CB043", align: "center", backgroundColor:"#FFFFFF"});
         
         //var particles = this.add.particles('red');
 
@@ -176,7 +176,7 @@ line-height: 0px; "
     function update(){
         
         ticker++;
-        if(ticker%20==0){
+        if(ticker%1==0){
             //text.destroy();
             for(var i = 0; i<11; i++){
             const r = ref(database, '/drones/'+i);
