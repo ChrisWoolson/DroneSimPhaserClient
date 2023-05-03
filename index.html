@@ -217,7 +217,10 @@ line-height: 0px; "
             //console.log("outta range")
             playerList[i].setTexture('unknownDrone');
             playerList[i].setScale(.02)
-            if(currentInfoDisplay == i){currentInfoDisplay = -1;}
+            if(currentInfoDisplay == i){
+                currentInfoDisplay = -1;
+                text.setPosition(-100,-100)
+            }
         }
     }
 }
