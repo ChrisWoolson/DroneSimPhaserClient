@@ -190,6 +190,7 @@ line-height: 0px; "
                 //console.log(currentInfoDisplay);
                 //if(text){text.destroy()}
                 if(i==currentInfoDisplay){
+                    
                     text.setPosition(x-30, y+35)
                     text.setText("ID: "+snapshot.val().name+"\nx: "+Math.floor(x)+", y: "+Math.floor(y))
                     //console.log("displayed")
@@ -216,6 +217,7 @@ line-height: 0px; "
             //console.log("outta range")
             playerList[i].setTexture('unknownDrone');
             playerList[i].setScale(.02)
+            if(currentInfoDisplay == i){currentInfoDisplay = -1;}
         }
     }
 }
